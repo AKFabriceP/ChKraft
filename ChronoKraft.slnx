@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="ChronoKraft.Application/ChronoKraft.Application.csproj" />
+  <Project Path="ChronoKraft.Domain/ChronoKraft.Domain.csproj" />
+  <Project Path="ChronoKraft.Infrastructure/ChronoKraft.Infrastructure.csproj" />
+  <Project Path="ChronoKraft.Tests/ChronoKraft.Tests.csproj" />
+  <Project Path="ChronoKraft.Web/ChronoKraft.Web.csproj" />
+</Solution>
