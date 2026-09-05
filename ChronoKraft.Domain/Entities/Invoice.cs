@@ -1,12 +1,17 @@
 namespace ChronoKraft.Domain.Entities
 {
+    public enum InvoiceType
+    {
+        PARTIAL,
+        FINAL
+    }
     public class Invoice
     {
         public int Id { get; set; }
         public int ProjectId { get; set; }
         public int ContractorId { get; set; }
         public string InvoiceNumber { get; set; } = string.Empty;
-        public string InvoiceType { get; set; } = string.Empty;
+        public InvoiceType InvoiceType { get; set; } = InvoiceType.PARTIAL;
         public DateTime IssueDate { get; set; }
         public DateTime DueDate { get; set; }
         public decimal TotalAmount { get; set; }
@@ -14,5 +19,7 @@ namespace ChronoKraft.Domain.Entities
         public Dictionary<string, object> Metadata { get; set; } = new();
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        public ICollection<InvoiceLine> InvoiceLines { get; set; } = new List<InvoiceLine>();
     }
 }

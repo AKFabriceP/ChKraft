@@ -21,5 +21,6 @@ namespace ChronoKraft.Domain.Entities
         public string? StandardAttributes { get; set; }
         public bool Active { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

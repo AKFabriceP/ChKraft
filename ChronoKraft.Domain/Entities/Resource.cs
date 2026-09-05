@@ -4,7 +4,9 @@ namespace ChronoKraft.Domain.Entities
     {
         public int Id { get; set; }
         public int ContractorId { get; set; }
+        public Contractor? Contractor { get; set; }
         public int ResourceTypeId { get; set; }
+        public ResourceType? ResourceType { get; set; }
         public int AvailableQuantity { get; set; }
         public decimal BaseRate { get; set; }
         public string? Attributes { get; set; }

@@ -9,7 +9,5 @@ namespace ChronoKraft.Domain.Entities
         public string SourceSystem { get; set; } = string.Empty;
         public string ExternalReferenceId { get; set; } = string.Empty;
         public DateTime SyncedAt { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

@@ -1,5 +1,11 @@
 namespace ChronoKraft.Domain.Entities
 {
+    public enum ReviewStatus
+    {
+        PENDING,
+        RESOLVED,
+        IGNORED
+    }
     public class TimeSheetReview
     {
         public int Id { get; set; }
@@ -9,11 +15,9 @@ namespace ChronoKraft.Domain.Entities
         public decimal ExternalTotal { get; set; }
         public decimal DeclaredTotal { get; set; }
         public decimal Discrepancy { get; set; }
-        public string Status { get; set; } = "pending";
+        public ReviewStatus Status { get; set; } = ReviewStatus.PENDING;
         public int ReviewedById { get; set; }
         public DateTime ReviewedAt { get; set; }
         public string? ResolutionNotes { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }
