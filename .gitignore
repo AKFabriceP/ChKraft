@@ -1,6 +1,7 @@
 # Artefacts de compilation
 **/bin/
 **/obj/
+MyRef/
 
 # Secrets locaux
 appsettings.Development.json
