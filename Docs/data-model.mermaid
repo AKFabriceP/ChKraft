@@ -1,0 +1,226 @@
+erDiagram
+    ApplicationUser |o--o| ProjectManager : "authenticates_as"
+    ApplicationUser |o--o| Contractor : "authenticates_as"
+    ApplicationUser |o--o| Worker : "authenticates_as"
+
+    ProjectManager ||--o{ Project : "manages"
+    Project ||--o{ Task : "contains"
+    Project ||--o{ Invoice : "generates"
+
+    Contractor ||--o{ Resource : "provides"
+    Contractor ||--o{ Invoice : "invoiced_for"
+    Contractor ||--o{ Worker : "employs"
+
+    ResourceType ||--o{ Resource : "defines"
+    ResourceType ||--o{ WorkerSkill : "qualifies_for"
+
+    Resource ||--o{ ResourceAssignment : "assigned_in"
+    Task ||--o{ ResourceAssignment : "requires"
+    ResourceAssignment ||--o{ ExecutionRecord : "tracks"
+
+    Worker ||--o{ WorkerSkill : "has"
+    Worker ||--o{ ExternalTimeTotal : "clocked"
+    Worker ||--o{ TimesheetReview : "flagged_for"
+
+    WorkerSkill ||--o{ TimesheetEntry : "logged_under"
+    Task ||--o{ TimesheetEntry : "worked_on"
+    TimesheetEntry ||--o| ExecutionRecord : "generates"
+
+    Invoice ||--o{ InvoiceLine : "contains"
+    Task ||--o{ InvoiceLine : "referenced_in"
+
+    ProjectManager {
+        int id PK
+        int user_id FK
+        string name
+        string phone
+        datetime created_at
+    }
+
+    Project {
+        int id PK
+        int manager_id FK
+        string name
+        text description
+        string client_name
+        string status
+        date planned_start_date
+        date planned_end_date
+        date actual_start_date
+        date actual_end_date
+        decimal estimated_budget
+        jsonb metadata
+        datetime created_at
+        datetime updated_at
+    }
+
+    Task {
+        int id PK
+        int project_id FK
+        string name
+        text description
+        string required_trade
+        string status
+        int order
+        jsonb attributes
+        datetime created_at
+        datetime updated_at
+    }
+
+    Contractor {
+        int id PK
+        int user_id FK
+        string name
+        string contact_name
+        string contact_email
+        string contact_phone
+        text address
+        string business_number
+        jsonb metadata
+        boolean active
+        datetime created_at
+    }
+
+    ResourceType {
+        int id PK
+        string name UK
+        string resource_category "choices: labor/equipment/material"
+        string trade
+        string default_billing_unit
+        decimal suggested_rate_min
+        decimal suggested_rate_max
+        text description
+        jsonb standard_attributes
+        boolean active
+        datetime created_at
+    }
+
+    Resource {
+        int id PK
+        int contractor_id FK
+        int resource_type_id FK
+        int available_quantity
+        decimal base_rate
+        jsonb attributes
+        text notes
+        boolean available
+        datetime created_at
+        datetime updated_at
+    }
+
+    ResourceAssignment {
+        int id PK
+        int task_id FK
+        int resource_id FK
+        int quantity_resources
+        decimal estimated_quantity
+        decimal estimated_unit_cost
+        string billing_unit
+        text notes
+        jsonb attributes
+        datetime created_at
+    }
+
+    ExecutionRecord {
+        int id PK
+        int assignment_id FK
+        int created_by_id FK
+        int source_timesheet_entry_id FK "nullable, si généré depuis une TimesheetEntry"
+        date execution_date
+        int resources_used
+        decimal quantity_per_resource
+        decimal applied_rate
+        string rate_type
+        decimal multiplier
+        text notes
+        datetime created_at
+    }
+
+    Worker {
+        int id PK
+        int contractor_id FK
+        int user_id FK "nullable - voir ADR-0012"
+        string first_name
+        string last_name
+        string phone "optionnel"
+        boolean active
+        datetime created_at
+    }
+
+    WorkerSkill {
+        int id PK
+        int worker_id FK
+        int resource_type_id FK
+        decimal hourly_rate
+        jsonb certifications
+        boolean is_primary
+        boolean active
+        datetime created_at
+    }
+
+    ExternalTimeTotal {
+        int id PK
+        int worker_id FK
+        date work_date
+        decimal total_hours
+        string source_system
+        string external_reference_id
+        datetime synced_at
+    }
+
+    TimesheetEntry {
+        int id PK
+        int worker_skill_id FK
+        int task_id FK
+        date work_date
+        decimal hours
+        text notes
+        datetime created_at
+    }
+
+    TimesheetReview {
+        int id PK
+        int worker_id FK
+        date work_date
+        decimal external_total
+        decimal declared_total
+        decimal discrepancy
+        string status "pending/resolved/ignored"
+        int reviewed_by_id FK
+        datetime reviewed_at
+        text resolution_notes
+        datetime created_at
+    }
+
+    Invoice {
+        int id PK
+        int project_id FK
+        int contractor_id FK
+        string invoice_number UK
+        string invoice_type
+        date issue_date
+        date due_date
+        decimal total_amount
+        text notes
+        jsonb metadata
+        datetime created_at
+    }
+
+    InvoiceLine {
+        int id PK
+        int invoice_id FK
+        int task_id FK
+        string description
+        decimal quantity
+        decimal unit_price
+        decimal total_amount
+        int order
+    }
+
+    ApplicationUser {
+        int id PK
+        string email UK
+        string password_hash
+        string user_role "Admin/Manager/Contractor/Worker - voir ADR-0012"
+        datetime created_at
+    }

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChronoKraft — Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #333;
+            background: linear-gradient(135deg, #512bd4 0%, #3b1fa3 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px; margin: 0 auto; background: white;
+            border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, #512bd4 0%, #3b1fa3 100%);
+            color: white; padding: 40px; text-align: center;
+        }
+        header h1 { font-size: 2.3em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; opacity: 0.9; }
+        nav {
+            background: #f8f9fa; padding: 20px 40px; border-bottom: 2px solid #e9ecef;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        nav a {
+            color: #512bd4; text-decoration: none; padding: 8px 16px;
+            border-radius: 6px; transition: all 0.3s; font-weight: 500;
+        }
+        nav a:hover { background: #512bd4; color: white; }
+        .content { padding: 40px; }
+        section { margin-bottom: 60px; scroll-margin-top: 80px; }
+        section h2 {
+            color: #512bd4; font-size: 1.8em; margin-bottom: 20px;
+            padding-bottom: 10px; border-bottom: 3px solid #512bd4;
+        }
+        .description {
+            background: #f8f9fa; padding: 20px; border-radius: 8px;
+            margin-bottom: 30px; border-left: 4px solid #512bd4;
+        }
+        .diagram-container {
+            background: white; padding: 30px; border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow-x: auto;
+        }
+        .mermaid { display: flex; justify-content: center; margin: 20px 0; }
+        .legend {
+            background: #fff9e6; padding: 15px; border-radius: 6px;
+            margin-top: 20px; border-left: 4px solid #ffc107;
+        }
+        .legend h4 { color: #f57c00; margin-bottom: 10px; }
+        .legend ul { list-style: none; padding-left: 0; }
+        .legend li { padding: 5px 0; }
+        .legend li::before { content: "▸ "; color: #f57c00; font-weight: bold; }
+        .adrref {
+            background: #ede7f6; padding: 12px 15px; border-radius: 6px;
+            margin-top: 15px; border-left: 4px solid #512bd4; font-size: 0.92em;
+        }
+        footer { background: #343a40; color: white; text-align: center; padding: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🏗️ ChronoKraft — Architecture</h1>
+        <p>ASP.NET Core · Clean Architecture · PostgreSQL</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#solution">Structure de Solution</a></li>
+            <li><a href="#global">Architecture Globale</a></li>
+            <li><a href="#domain">Séparation Domaine / Application</a></li>
+            <li><a href="#auth">Authentification et Rôles</a></li>
+            <li><a href="#data-model">Modèle de Données</a></li>
+            <li><a href="#timesheet">Réconciliation des Feuilles de Temps</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+
+        <section id="solution">
+            <h2>📐 Structure de Solution — Clean Architecture</h2>
+            <div class="description">
+                <p>La séparation entre logique de calcul pure et logique d'accès aux données est imposée par le compilateur, via des projets .NET distincts avec des références unidirectionnelles.</p>
+            </div>
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TB
+    subgraph SLN["ChronoKraft.sln"]
+        DOMAIN["ChronoKraft.Domain<br/>Entités POCO, Strategy Pattern Gantt,<br/>validate_timesheet() — AUCUNE dépendance externe"]
+        APPLICATION["ChronoKraft.Application<br/>Services (TaskManagementService, etc.)<br/>Interfaces de repository"]
+        INFRA["ChronoKraft.Infrastructure<br/>DbContext EF Core, Migrations,<br/>Implémentations de repository"]
+        WEB["ChronoKraft.Web<br/>Razor Pages / API Controllers"]
+        TESTS["ChronoKraft.Tests<br/>xUnit — Domain testé sans DB"]
+    end
+
+    APPLICATION -->|référence| DOMAIN
+    INFRA -->|référence| APPLICATION
+    INFRA -->|référence| DOMAIN
+    WEB -->|référence| APPLICATION
+    WEB -->|référence| INFRA
+    TESTS -->|référence| DOMAIN
+    TESTS -->|référence| APPLICATION
+
+    style DOMAIN fill:#c8e6c9
+    style TESTS fill:#e1f5fe
+                </div>
+            </div>
+            <div class="adrref">📄 ADR-0001, ADR-0003</div>
+        </section>
+
+        <section id="global">
+            <h2>🌐 Architecture Globale</h2>
+            <div class="description">
+                <p>Vue d'ensemble du système : utilisateurs, interface, services applicatifs, couche Domaine, infrastructure et base de données.</p>
+            </div>
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TB
+    subgraph EXT["Systèmes Externes"]
+        BADGE[Système de Pointage Externe]
+    end
+
+    subgraph USERS["Utilisateurs"]
+        PM[Gestionnaire de Projet]
+        CR[Représentant Entrepreneur]
+        WK[Travailleur]
+    end
+
+    subgraph WEBPROJ["ChronoKraft.Web"]
+        RAZOR[Razor Pages<br/>CRUD scaffoldé]
+        API[API Controllers<br/>+ Swashbuckle/Swagger]
+        EXCELCTRL[Excel Controllers]
+    end
+
+    subgraph APPPROJ["ChronoKraft.Application"]
+        SVC_TASK[TaskManagementService]
+        SVC_INVOICE[InvoicingService]
+        SVC_TIMESHEET[TimesheetValidationService]
+        SVC_GANTT[GanttService — adaptateur mince]
+    end
+
+    subgraph DOMPROJ["ChronoKraft.Domain — sans dépendance externe"]
+        DOM_GANTT["GanttCalculator<br/>IDependencyStrategy (FS/SS/FF/SF)"]
+        DOM_TS["TimesheetValidator.Validate()"]
+        DOM_RES["ResourceAttributeValidator"]
+        ENTITIES["Entités POCO<br/>Worker, Task, Project, etc."]
+    end
+
+    subgraph INFRAPROJ["ChronoKraft.Infrastructure"]
+        DBCONTEXT[ChronoKraftDbContext<br/>EF Core]
+        REPOS[Implémentations Repository]
+        EXCELGEN[ClosedXML — Générateurs/Importeurs]
+    end
+
+    subgraph DB["PostgreSQL"]
+        PGSQL[(PostgreSQL<br/>colonnes JSONB natives via Npgsql)]
+    end
+
+    BADGE -->|API push| API
+    WK --> RAZOR
+    PM --> RAZOR
+    CR --> RAZOR
+
+    RAZOR --> SVC_TASK
+    RAZOR --> SVC_INVOICE
+    API --> SVC_TIMESHEET
+    EXCELCTRL --> EXCELGEN
+
+    SVC_TASK --> SVC_GANTT
+    SVC_GANTT -.->|délègue| DOM_GANTT
+    SVC_TIMESHEET -.->|délègue| DOM_TS
+    SVC_TASK -.->|délègue| DOM_RES
+
+    SVC_TASK --> REPOS
+    SVC_INVOICE --> REPOS
+    SVC_TIMESHEET --> REPOS
+    REPOS --> DBCONTEXT
+    DBCONTEXT --> PGSQL
+
+    style DOM_GANTT fill:#c8e6c9
+    style DOM_TS fill:#c8e6c9
+    style DOM_RES fill:#c8e6c9
+    style BADGE fill:#ffe0b2
+                </div>
+            </div>
+            <div class="legend">
+                <h4>🔑 Éléments Clés</h4>
+                <ul>
+                    <li><strong>ChronoKraft.Domain (vert)</strong> : aucune dépendance à EF Core/ASP.NET — testable en millisecondes avec xUnit, sans base de données</li>
+                    <li><strong>Système de Pointage Externe (orange)</strong> : source de vérité pour le total d'heures, jamais pour la ventilation par rôle</li>
+                </ul>
+            </div>
+            <div class="adrref">📄 ADR-0002, ADR-0003</div>
+        </section>
+
+        <section id="domain">
+            <h2>🧩 Séparation Domaine / Application</h2>
+            <div class="description">
+                <p>Les services de <code>ChronoKraft.Application</code> restent des adaptateurs minces : ils lisent/écrivent via les repositories, puis délèguent tout calcul à <code>ChronoKraft.Domain</code>.</p>
+            </div>
+            <div class="diagram-container">
+                <div class="mermaid">
+graph LR
+    subgraph APP["ChronoKraft.Application — testé avec xUnit + PostgreSQL réel"]
+        SVC["GanttService.CalculateTaskDates(task)"]
+        SVC2["TimesheetValidationService.ValidateWorkerDay(worker, date)"]
+    end
+
+    subgraph DOM["ChronoKraft.Domain — testé avec xUnit pur, sans DB"]
+        DOM1["IDependencyStrategy<br/>FinishToStartStrategy,<br/>StartToStartStrategy, etc."]
+        DOM2["TimesheetValidator.Validate(externalTotal,<br/>declaredHours) → résultat"]
+        DOM3["TaskWindow record<br/>(immuable, pas de DbContext,<br/>pas de .Include())"]
+    end
+
+    SVC -->|"1. lit Task via IRepository"| SVC
+    SVC -->|"2. construit TaskWindow"| DOM3
+    SVC -->|"3. délègue le calcul"| DOM1
+    DOM1 -->|"4. retourne une DateOnly pure"| SVC
+    SVC -->|"5. SaveChangesAsync() — seule étape avec I/O"| SVC
+
+    SVC2 -->|"1. lit ExternalTimeTotal, TimesheetEntry"| SVC2
+    SVC2 -->|"2. délègue la comparaison"| DOM2
+    DOM2 -->|"3. retourne IsValid + Discrepancy"| SVC2
+    SVC2 -->|"4. crée TimesheetReview si invalide"| SVC2
+
+    style DOM1 fill:#c8e6c9
+    style DOM2 fill:#c8e6c9
+    style DOM3 fill:#c8e6c9
+    style SVC fill:#fff3e0
+    style SVC2 fill:#fff3e0
+                </div>
+            </div>
+            <div class="legend">
+                <h4>🔑 Bénéfices Concrets</h4>
+                <ul>
+                    <li><strong>Vérifié à la compilation</strong> : <code>ChronoKraft.Domain</code> ne peut référencer EF Core — toute violation casse le build</li>
+                    <li><strong>Extensible sans modification</strong> : ajouter un type de dépendance Gantt = ajouter une classe <code>IDependencyStrategy</code></li>
+                    <li><strong>TDD réaliste</strong> : <code>ChronoKraft.Domain.Tests</code> s'exécute sans PostgreSQL</li>
+                </ul>
+            </div>
+            <div class="adrref">📄 ADR-0003</div>
+        </section>
+
+        <section id="auth">
+            <h2>🔐 Authentification et Rôles</h2>
+            <div class="description">
+                <p>Quatre rôles : Admin, Manager, Contractor, Worker. Trois d'entre eux se lient à une entité métier existante via une FK optionnelle ; Admin n'a aucun profil métier associé.</p>
+            </div>
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TD
+    subgraph LOGIN["Connexion"]
+        USER["Utilisateur saisit<br/>email + mot de passe"]
+    end
+
+    subgraph IDENTITY["ASP.NET Core Identity"]
+        AUTH["SignInManager.PasswordSignInAsync()"]
+        ROLECHECK["Rôle déterminé :<br/>ApplicationUser.Role"]
+    end
+
+    subgraph ROLES["Quatre rôles possibles"]
+        ADMIN["Admin<br/>aucun profil métier associé"]
+        MANAGER["Manager<br/>lié à ProjectManager.UserId"]
+        CONTRACTOR["Contractor<br/>lié à Contractor.UserId"]
+        WORKER["Worker<br/>lié à Worker.UserId"]
+    end
+
+    subgraph ACCESS["Accès accordé selon le rôle (attribut Authorize)"]
+        ADMINPAGES["Administration système,<br/>gestion des comptes"]
+        MANAGERPAGES["Création/gestion de projets,<br/>tâches, facturation"]
+        CONTRACTORPAGES["Gestion des ressources<br/>et travailleurs de l'entreprise"]
+        WORKERPAGES["Consultation de sa propre<br/>feuille de temps (futur)"]
+    end
+
+    USER --> AUTH
+    AUTH --> ROLECHECK
+    ROLECHECK --> ADMIN
+    ROLECHECK --> MANAGER
+    ROLECHECK --> CONTRACTOR
+    ROLECHECK --> WORKER
+
+    ADMIN --> ADMINPAGES
+    MANAGER --> MANAGERPAGES
+    CONTRACTOR --> CONTRACTORPAGES
+    WORKER --> WORKERPAGES
+
+    style ADMIN fill:#fce4ec
+    style MANAGER fill:#e1f5fe
+    style CONTRACTOR fill:#fff3e0
+    style WORKER fill:#e8f5e9
+                </div>
+            </div>
+            <div class="legend">
+                <h4>🔑 Limitation Assumée</h4>
+                <ul>
+                    <li>Un seul compte de connexion par entreprise entrepreneur (<code>Contractor</code>), pas un compte par employé individuel</li>
+                </ul>
+            </div>
+            <div class="adrref">📄 ADR-0012</div>
+        </section>
+
+        <section id="data-model">
+            <h2>🗄️ Modèle de Données — 15 Entités + Identity</h2>
+            <div class="description">
+                <p>Les champs à attributs dynamiques utilisent le type natif PostgreSQL <code>jsonb</code>, mappé directement sur des <code>Dictionary&lt;string, object&gt;</code> en C#.</p>
+            </div>
+            <div class="diagram-container">
+                <div class="mermaid">
+erDiagram
+    ApplicationUser |o--o| ProjectManager : "authenticates_as"
+    ApplicationUser |o--o| Contractor : "authenticates_as"
+    ApplicationUser |o--o| Worker : "authenticates_as"
+
+    ProjectManager ||--o{ Project : "manages"
+    Project ||--o{ Task : "contains"
+    Project ||--o{ Invoice : "generates"
+
+    Contractor ||--o{ Resource : "provides"
+    Contractor ||--o{ Invoice : "invoiced_for"
+    Contractor ||--o{ Worker : "employs"
+
+    ResourceType ||--o{ Resource : "defines"
+    ResourceType ||--o{ WorkerSkill : "qualifies_for"
+
+    Resource ||--o{ ResourceAssignment : "assigned_in"
+    Task ||--o{ ResourceAssignment : "requires"
+    ResourceAssignment ||--o{ ExecutionRecord : "tracks"
+
+    Worker ||--o{ WorkerSkill : "has"
+    Worker ||--o{ ExternalTimeTotal : "clocked"
+    Worker ||--o{ TimesheetReview : "flagged_for"
+
+    WorkerSkill ||--o{ TimesheetEntry : "logged_under"
+    Task ||--o{ TimesheetEntry : "worked_on"
+    TimesheetEntry ||--o| ExecutionRecord : "generates"
+
+    Invoice ||--o{ InvoiceLine : "contains"
+    Task ||--o{ InvoiceLine : "referenced_in"
+
+    ProjectManager {
+        int id PK
+        int user_id FK
+        string name
+        string phone
+        datetime created_at
+    }
+
+    Project {
+        int id PK
+        int manager_id FK
+        string name
+        text description
+        string client_name
+        string status
+        date planned_start_date
+        date planned_end_date
+        date actual_start_date
+        date actual_end_date
+        decimal estimated_budget
+        jsonb metadata
+        datetime created_at
+        datetime updated_at
+    }
+
+    Task {
+        int id PK
+        int project_id FK
+        string name
+        text description
+        string required_trade
+        string status
+        int order
+        jsonb attributes
+        datetime created_at
+        datetime updated_at
+    }
+
+    Contractor {
+        int id PK
+        int user_id FK
+        string name
+        string contact_name
+        string contact_email
+        string contact_phone
+        text address
+        string business_number
+        jsonb metadata
+        boolean active
+        datetime created_at
+    }
+
+    ResourceType {
+        int id PK
+        string name UK
+        string resource_category "choices: labor/equipment/material"
+        string trade
+        string default_billing_unit
+        decimal suggested_rate_min
+        decimal suggested_rate_max
+        text description
+        jsonb standard_attributes
+        boolean active
+        datetime created_at
+    }
+
+    Resource {
+        int id PK
+        int contractor_id FK
+        int resource_type_id FK
+        int available_quantity
+        decimal base_rate
+        jsonb attributes
+        text notes
+        boolean available
+        datetime created_at
+        datetime updated_at
+    }
+
+    ResourceAssignment {
+        int id PK
+        int task_id FK
+        int resource_id FK
+        int quantity_resources
+        decimal estimated_quantity
+        decimal estimated_unit_cost
+        string billing_unit
+        text notes
+        jsonb attributes
+        datetime created_at
+    }
+
+    ExecutionRecord {
+        int id PK
+        int assignment_id FK
+        int created_by_id FK
+        int source_timesheet_entry_id FK "nullable, si généré depuis une TimesheetEntry"
+        date execution_date
+        int resources_used
+        decimal quantity_per_resource
+        decimal applied_rate
+        string rate_type
+        decimal multiplier
+        text notes
+        datetime created_at
+    }
+
+    Worker {
+        int id PK
+        int contractor_id FK
+        int user_id FK "nullable - voir ADR-0012"
+        string first_name
+        string last_name
+        string phone "optionnel"
+        boolean active
+        datetime created_at
+    }
+
+    WorkerSkill {
+        int id PK
+        int worker_id FK
+        int resource_type_id FK
+        decimal hourly_rate
+        jsonb certifications
+        boolean is_primary
+        boolean active
+        datetime created_at
+    }
+
+    ExternalTimeTotal {
+        int id PK
+        int worker_id FK
+        date work_date
+        decimal total_hours
+        string source_system
+        string external_reference_id
+        datetime synced_at
+    }
+
+    TimesheetEntry {
+        int id PK
+        int worker_skill_id FK
+        int task_id FK
+        date work_date
+        decimal hours
+        text notes
+        datetime created_at
+    }
+
+    TimesheetReview {
+        int id PK
+        int worker_id FK
+        date work_date
+        decimal external_total
+        decimal declared_total
+        decimal discrepancy
+        string status "pending/resolved/ignored"
+        int reviewed_by_id FK
+        datetime reviewed_at
+        text resolution_notes
+        datetime created_at
+    }
+
+    Invoice {
+        int id PK
+        int project_id FK
+        int contractor_id FK
+        string invoice_number UK
+        string invoice_type
+        date issue_date
+        date due_date
+        decimal total_amount
+        text notes
+        jsonb metadata
+        datetime created_at
+    }
+
+    InvoiceLine {
+        int id PK
+        int invoice_id FK
+        int task_id FK
+        string description
+        decimal quantity
+        decimal unit_price
+        decimal total_amount
+        int order
+    }
+
+    ApplicationUser {
+        int id PK
+        string email UK
+        string password_hash
+        string user_role "Admin/Manager/Contractor/Worker - voir ADR-0012"
+        datetime created_at
+    }
+                </div>
+            </div>
+            <div class="adrref">📄 ADR-0002, ADR-0005, ADR-0006, ADR-0007, ADR-0009, ADR-0012</div>
+        </section>
+
+        <section id="timesheet">
+            <h2>🔄 Réconciliation des Feuilles de Temps</h2>
+            <div class="description">
+                <p>Comment le total d'heures externe et la ventilation déclarée par le travailleur sont comparés, sans jamais bloquer le processus.</p>
+            </div>
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TD
+    A["Système externe pousse<br/>ExternalTimeTotal via API"] --> C{"TimesheetValidationService<br/>.ValidateWorkerDay()"}
+    B["Travailleur saisit sa<br/>TimesheetEntry ventilée par rôle"] --> C
+
+    C --> D["TimesheetValidator.Validate()<br/>ChronoKraft.Domain, sans DB"]
+    D --> E{"IsValid ?"}
+
+    E -->|Oui| F["Aucune action supplémentaire<br/>Données acceptées"]
+    E -->|Non| G["Créer TimesheetReview<br/>Status = Pending"]
+
+    G --> H["Donnée quand même acceptée<br/>— jamais bloquant"]
+    F --> I["TimesheetEntry validée peut<br/>générer un ExecutionRecord"]
+    H --> I
+
+    I --> J["ExecutionRecord alimente<br/>InvoicingService"]
+
+    G -.->|Plus tard| K["Révision humaine<br/>Status → Resolved / Ignored"]
+
+    style G fill:#fce4ec
+    style H fill:#fff3e0
+    style D fill:#c8e6c9
+                </div>
+            </div>
+            <div class="legend">
+                <h4>🔑 Règles</h4>
+                <ul>
+                    <li>Le système ne détermine <strong>jamais</strong> automatiquement le rôle</li>
+                    <li>Une divergence est <strong>toujours acceptée</strong>, jamais bloquante</li>
+                    <li>Toute divergence est <strong>toujours tracée</strong> via <code>TimesheetReview</code></li>
+                </ul>
+            </div>
+            <div class="adrref">📄 ADR-0008</div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ChronoKraft | ASP.NET Core · PostgreSQL · Clean Architecture</p>
+    </footer>
+</div>
+
+<script>
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' }
+    });
+</script>
+</body>
+</html>
