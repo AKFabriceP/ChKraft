@@ -32,6 +32,7 @@ chronokraft/
 ├── Docs/architecture.html               — version visuelle autonome (ouvrir dans un navigateur)
 ├── Docs/version-plan.md                 — plan de livraison, v0.1 à v1.0
 ├── Docs/data-model.mermaid              — schéma de données source (15 entités + Identity)
+├── Docs/ADRs/open-questions.md          — questions métier à valider avec le client
 └── Docs/ADRs/                           — Architecture Decision Records (source de vérité pour toute décision)
 ```
 
