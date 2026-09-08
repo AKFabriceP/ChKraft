@@ -33,6 +33,7 @@ ADR-00XX".
 | [0013](0013-project-status-enums.md) | Statuts de Project et ProjectTask en types énumérés | Accepté |
 | [0014](0014-status-reference-dictionary.md) | Table `StatusReference` — dictionnaire autonome des valeurs d'enum | Différé |
 | [0015](0015-migration-rollback-strategy.md) | Rollback en production via script de migration généré | Différé |
+| [0016](0016-auth0-hierarchical-rbac.md) | Auth0 et RBAC hiérarchique par portée métier | En étude |
 
 ## Comment ajouter un ADR
 

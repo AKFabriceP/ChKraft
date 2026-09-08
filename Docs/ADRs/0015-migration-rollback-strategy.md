@@ -41,6 +41,29 @@ Le script est **revu avant exécution**, puis appliqué explicitement
 (manuellement ou via une étape dédiée de la CI/CD) — jamais déclenché
 automatiquement au démarrage de l'application.
 
+## Pipeline complet — où chaque commande s'exécute
+
+Un point souvent mal compris : **générer** une migration et
+**l'appliquer** en production sont deux activités qui ne se produisent
+jamais au même endroit ni au même moment.
+
+| Étape | Commande | Environnement | Nécessite le SDK .NET / outils EF ? |
+|---|---|---|---|
+| **1. Développement** — un modèle C# change | `dotnet ef migrations add <Nom>` | Poste du développeur | Oui, jamais en production |
+| **2. Build / CI** — préparation du déploiement | `dotnet ef migrations script <Précédente> <Cible> -o migrate.sql` | Agent CI/CD (GitHub Actions, etc.) | Oui, sur l'agent de build |
+| **3. Déploiement** — application réelle | Exécution de `migrate.sql` | Serveur / environnement cible | **Non** — un simple client SQL (`psql`) suffit |
+
+Le fichier `.cs` généré à l'étape 1 est **commité dans le dépôt git**
+comme n'importe quel autre fichier de code — il ne "voyage" jamais
+séparément vers la production.
+
+**Conséquence directe pour l'environnement de production :** contrairement
+à l'alternative écartée (`db.Database.Migrate()` au démarrage, qui
+exigerait qu'EF Core soit pleinement fonctionnel dans l'application
+déployée elle-même), l'approche par script ne demande **aucune**
+capacité EF Core côté production — seulement un accès à la base de
+données et un client SQL basique.
+
 ## Limitations connues, à valider pendant la phase de test
 
 - **Perte de données irréversible** sur les colonnes/tables supprimées
