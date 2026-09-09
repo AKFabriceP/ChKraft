@@ -1,0 +1,84 @@
+@page
+@model ChronoKraft.Web.Pages_Resources.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Resource[0].Contractor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Resource[0].ResourceType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Resource[0].AvailableQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Resource[0].BaseRate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Resource[0].Attributes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Resource[0].Notes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Resource[0].Available)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Resource[0].CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Resource[0].UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Resource) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contractor.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResourceType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BaseRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Attributes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Available)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

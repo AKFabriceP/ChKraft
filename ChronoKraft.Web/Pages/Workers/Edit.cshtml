@@ -1,0 +1,70 @@
+@page
+@model ChronoKraft.Web.Pages_Workers.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Worker</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Worker.Id" />
+            <div class="form-group">
+                <label asp-for="Worker.ContractorId" class="control-label"></label>
+                <select asp-for="Worker.ContractorId" class="form-control" asp-items="ViewBag.ContractorId" ></select>
+                <span asp-validation-for="Worker.ContractorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker.UserId" class="control-label"></label>
+                <input asp-for="Worker.UserId" class="form-control" />
+                <span asp-validation-for="Worker.UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker.FirstName" class="control-label"></label>
+                <input asp-for="Worker.FirstName" class="form-control" />
+                <span asp-validation-for="Worker.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker.LastName" class="control-label"></label>
+                <input asp-for="Worker.LastName" class="form-control" />
+                <span asp-validation-for="Worker.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker.Phone" class="control-label"></label>
+                <input asp-for="Worker.Phone" class="form-control" />
+                <span asp-validation-for="Worker.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Worker.Active" /> @Html.DisplayNameFor(model => model.Worker.Active)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker.CreatedAt" class="control-label"></label>
+                <input asp-for="Worker.CreatedAt" class="form-control" />
+                <span asp-validation-for="Worker.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker.UpdatedAt" class="control-label"></label>
+                <input asp-for="Worker.UpdatedAt" class="form-control" />
+                <span asp-validation-for="Worker.UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

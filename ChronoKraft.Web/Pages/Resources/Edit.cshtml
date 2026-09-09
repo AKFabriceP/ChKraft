@@ -1,0 +1,75 @@
+@page
+@model ChronoKraft.Web.Pages_Resources.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Resource</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Resource.Id" />
+            <div class="form-group">
+                <label asp-for="Resource.ContractorId" class="control-label"></label>
+                <select asp-for="Resource.ContractorId" class="form-control" asp-items="ViewBag.ContractorId" ></select>
+                <span asp-validation-for="Resource.ContractorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resource.ResourceTypeId" class="control-label"></label>
+                <select asp-for="Resource.ResourceTypeId" class="form-control" asp-items="ViewBag.ResourceTypeId" ></select>
+                <span asp-validation-for="Resource.ResourceTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resource.AvailableQuantity" class="control-label"></label>
+                <input asp-for="Resource.AvailableQuantity" class="form-control" />
+                <span asp-validation-for="Resource.AvailableQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resource.BaseRate" class="control-label"></label>
+                <input asp-for="Resource.BaseRate" class="form-control" />
+                <span asp-validation-for="Resource.BaseRate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resource.Attributes" class="control-label"></label>
+                <input asp-for="Resource.Attributes" class="form-control" />
+                <span asp-validation-for="Resource.Attributes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resource.Notes" class="control-label"></label>
+                <input asp-for="Resource.Notes" class="form-control" />
+                <span asp-validation-for="Resource.Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Resource.Available" /> @Html.DisplayNameFor(model => model.Resource.Available)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resource.CreatedAt" class="control-label"></label>
+                <input asp-for="Resource.CreatedAt" class="form-control" />
+                <span asp-validation-for="Resource.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resource.UpdatedAt" class="control-label"></label>
+                <input asp-for="Resource.UpdatedAt" class="form-control" />
+                <span asp-validation-for="Resource.UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

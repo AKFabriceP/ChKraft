@@ -1,0 +1,73 @@
+@page
+@model ChronoKraft.Web.Pages_TimeSheetReviews.CreateModel
+
+        @{
+        ViewData["Title"] = "Create";
+        }
+        
+        <h1>Create</h1>
+        
+    <h4>TimeSheetReview</h4>
+    <hr />
+    <div class="row">
+    <div class="col-md-4">
+    <form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TimeSheetReview.WorkerId" class="control-label"></label>
+                <select asp-for="TimeSheetReview.WorkerId" class ="form-control" asp-items="ViewBag.WorkerId" ></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeSheetReview.WorkDate" class="control-label"></label>
+                <input asp-for="TimeSheetReview.WorkDate" class="form-control" />
+                <span asp-validation-for="TimeSheetReview.WorkDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeSheetReview.ExternalTotal" class="control-label"></label>
+                <input asp-for="TimeSheetReview.ExternalTotal" class="form-control" />
+                <span asp-validation-for="TimeSheetReview.ExternalTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeSheetReview.DeclaredTotal" class="control-label"></label>
+                <input asp-for="TimeSheetReview.DeclaredTotal" class="form-control" />
+                <span asp-validation-for="TimeSheetReview.DeclaredTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeSheetReview.Discrepancy" class="control-label"></label>
+                <input asp-for="TimeSheetReview.Discrepancy" class="form-control" />
+                <span asp-validation-for="TimeSheetReview.Discrepancy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeSheetReview.Status" class="control-label"></label>
+                <select asp-for="TimeSheetReview.Status" class="form-control" ></select>
+                <span asp-validation-for="TimeSheetReview.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeSheetReview.ReviewedById" class="control-label"></label>
+                <input asp-for="TimeSheetReview.ReviewedById" class="form-control" />
+                <span asp-validation-for="TimeSheetReview.ReviewedById" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeSheetReview.ReviewedAt" class="control-label"></label>
+                <input asp-for="TimeSheetReview.ReviewedAt" class="form-control" />
+                <span asp-validation-for="TimeSheetReview.ReviewedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeSheetReview.ResolutionNotes" class="control-label"></label>
+                <input asp-for="TimeSheetReview.ResolutionNotes" class="form-control" />
+                <span asp-validation-for="TimeSheetReview.ResolutionNotes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,108 @@
+@page
+@model ChronoKraft.Web.Pages_Projects.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].Manager)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].ClientName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].PlannedStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].PlannedEndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].ActualStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].ActualEndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].EstimatedBudget)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].Metadata)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Project) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manager.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClientName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlannedStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlannedEndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActualStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActualEndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimatedBudget)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Metadata)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

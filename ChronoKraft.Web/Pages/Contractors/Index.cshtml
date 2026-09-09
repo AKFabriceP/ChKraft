@@ -1,0 +1,96 @@
+@page
+@model ChronoKraft.Web.Pages_Contractors.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor[0].UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor[0].ContactName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor[0].ContactEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor[0].ContactPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor[0].BusinessNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor[0].Metadata)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor[0].Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor[0].CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor[0].UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Contractor) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BusinessNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Metadata)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

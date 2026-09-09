@@ -1,0 +1,85 @@
+@page
+@model ChronoKraft.Web.Pages_Invoices.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Invoice</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Invoice.Id" />
+            <div class="form-group">
+                <label asp-for="Invoice.ProjectId" class="control-label"></label>
+                <select asp-for="Invoice.ProjectId" class="form-control" asp-items="ViewBag.ProjectId" ></select>
+                <span asp-validation-for="Invoice.ProjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice.ContractorId" class="control-label"></label>
+                <input asp-for="Invoice.ContractorId" class="form-control" />
+                <span asp-validation-for="Invoice.ContractorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice.InvoiceNumber" class="control-label"></label>
+                <input asp-for="Invoice.InvoiceNumber" class="form-control" />
+                <span asp-validation-for="Invoice.InvoiceNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice.InvoiceType" class="control-label"></label>
+                <select asp-for="Invoice.InvoiceType" class="form-control" ></select>
+                <span asp-validation-for="Invoice.InvoiceType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice.IssueDate" class="control-label"></label>
+                <input asp-for="Invoice.IssueDate" class="form-control" />
+                <span asp-validation-for="Invoice.IssueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice.DueDate" class="control-label"></label>
+                <input asp-for="Invoice.DueDate" class="form-control" />
+                <span asp-validation-for="Invoice.DueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice.TotalAmount" class="control-label"></label>
+                <input asp-for="Invoice.TotalAmount" class="form-control" />
+                <span asp-validation-for="Invoice.TotalAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice.Notes" class="control-label"></label>
+                <input asp-for="Invoice.Notes" class="form-control" />
+                <span asp-validation-for="Invoice.Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice.Metadata" class="control-label"></label>
+                <input asp-for="Invoice.Metadata" class="form-control" />
+                <span asp-validation-for="Invoice.Metadata" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice.CreatedAt" class="control-label"></label>
+                <input asp-for="Invoice.CreatedAt" class="form-control" />
+                <span asp-validation-for="Invoice.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice.UpdatedAt" class="control-label"></label>
+                <input asp-for="Invoice.UpdatedAt" class="form-control" />
+                <span asp-validation-for="Invoice.UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,84 @@
+@page
+@model ChronoKraft.Web.Pages_TimeSheetReviews.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeSheetReview[0].Worker)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeSheetReview[0].WorkDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeSheetReview[0].ExternalTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeSheetReview[0].DeclaredTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeSheetReview[0].Discrepancy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeSheetReview[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeSheetReview[0].ReviewedById)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeSheetReview[0].ReviewedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeSheetReview[0].ResolutionNotes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.TimeSheetReview) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Worker.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExternalTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeclaredTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discrepancy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewedById)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResolutionNotes)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,90 @@
+@page
+@model ChronoKraft.Web.Pages_ResourceAssignments.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceAssignment[0].ProjectTask)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceAssignment[0].Resource)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceAssignment[0].QuantityResources)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceAssignment[0].EstimatedQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceAssignment[0].EstimatedUnitCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceAssignment[0].BillingUnit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceAssignment[0].Notes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceAssignment[0].Attributes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceAssignment[0].CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceAssignment[0].UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ResourceAssignment) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectTask.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Resource.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantityResources)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimatedQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimatedUnitCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BillingUnit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Attributes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

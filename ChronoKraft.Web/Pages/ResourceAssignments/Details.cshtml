@@ -1,0 +1,79 @@
+@page
+@model ChronoKraft.Web.Pages_ResourceAssignments.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ResourceAssignment</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResourceAssignment.ProjectTask)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResourceAssignment.ProjectTask.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResourceAssignment.Resource)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResourceAssignment.Resource.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResourceAssignment.QuantityResources)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResourceAssignment.QuantityResources)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResourceAssignment.EstimatedQuantity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResourceAssignment.EstimatedQuantity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResourceAssignment.EstimatedUnitCost)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResourceAssignment.EstimatedUnitCost)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResourceAssignment.BillingUnit)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResourceAssignment.BillingUnit)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResourceAssignment.Notes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResourceAssignment.Notes)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResourceAssignment.Attributes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResourceAssignment.Attributes)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResourceAssignment.CreatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResourceAssignment.CreatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResourceAssignment.UpdatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResourceAssignment.UpdatedAt)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.ResourceAssignment.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -1,0 +1,84 @@
+@page
+@model ChronoKraft.Web.Pages_ResourceTypes.CreateModel
+
+        @{
+        ViewData["Title"] = "Create";
+        }
+        
+        <h1>Create</h1>
+        
+    <h4>ResourceType</h4>
+    <hr />
+    <div class="row">
+    <div class="col-md-4">
+    <form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ResourceType.Name" class="control-label"></label>
+                <input asp-for="ResourceType.Name" class="form-control" />
+                <span asp-validation-for="ResourceType.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResourceType.ResourceCategory" class="control-label"></label>
+                <select asp-for="ResourceType.ResourceCategory" class="form-control" ></select>
+                <span asp-validation-for="ResourceType.ResourceCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResourceType.Trade" class="control-label"></label>
+                <input asp-for="ResourceType.Trade" class="form-control" />
+                <span asp-validation-for="ResourceType.Trade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResourceType.DefaultBillingUnit" class="control-label"></label>
+                <select asp-for="ResourceType.DefaultBillingUnit" class="form-control" ></select>
+                <span asp-validation-for="ResourceType.DefaultBillingUnit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResourceType.SuggestedRateMin" class="control-label"></label>
+                <input asp-for="ResourceType.SuggestedRateMin" class="form-control" />
+                <span asp-validation-for="ResourceType.SuggestedRateMin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResourceType.SuggestedRateMax" class="control-label"></label>
+                <input asp-for="ResourceType.SuggestedRateMax" class="form-control" />
+                <span asp-validation-for="ResourceType.SuggestedRateMax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResourceType.Description" class="control-label"></label>
+                <input asp-for="ResourceType.Description" class="form-control" />
+                <span asp-validation-for="ResourceType.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResourceType.StandardAttributes" class="control-label"></label>
+                <input asp-for="ResourceType.StandardAttributes" class="form-control" />
+                <span asp-validation-for="ResourceType.StandardAttributes" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="ResourceType.Active" /> @Html.DisplayNameFor(model => model.ResourceType.Active)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResourceType.CreatedAt" class="control-label"></label>
+                <input asp-for="ResourceType.CreatedAt" class="form-control" />
+                <span asp-validation-for="ResourceType.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResourceType.UpdatedAt" class="control-label"></label>
+                <input asp-for="ResourceType.UpdatedAt" class="form-control" />
+                <span asp-validation-for="ResourceType.UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

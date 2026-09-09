@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using ChronoKraft.Domain.Entities;
+using ChronoKraft.Infrastructure;
+
+namespace ChronoKraft.Web.Pages_TimeSheetReviews
+{
+    public class EditModel : PageModel
+    {
+        private readonly ChronoKraft.Infrastructure.CKDbContext _context;
+
+        public EditModel(ChronoKraft.Infrastructure.CKDbContext context)
+        {
+            _context = context;
+        }
+
+        [BindProperty]
+        public TimeSheetReview TimeSheetReview { get; set; } = default!;
+
+        public async Task<IActionResult> OnGetAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var timesheetreview =  await _context.TimeSheetReviews.FirstOrDefaultAsync(m => m.Id == id);
+            if (timesheetreview == null)
+            {
+                return NotFound();
+            }
+            TimeSheetReview = timesheetreview;
+           ViewData["WorkerId"] = new SelectList(_context.Workers, "Id", "FirstName");
+            return Page();
+        }
+
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more information, see https://aka.ms/RazorPagesCRUD.
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            _context.Attach(TimeSheetReview).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TimeSheetReviewExists(TimeSheetReview.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToPage("./Index");
+        }
+
+        private bool TimeSheetReviewExists(int id)
+        {
+            return _context.TimeSheetReviews.Any(e => e.Id == id);
+        }
+    }
+}

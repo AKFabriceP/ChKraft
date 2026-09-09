@@ -1,0 +1,84 @@
+@page
+@model ChronoKraft.Web.Pages_Contractors.CreateModel
+
+        @{
+        ViewData["Title"] = "Create";
+        }
+        
+        <h1>Create</h1>
+        
+    <h4>Contractor</h4>
+    <hr />
+    <div class="row">
+    <div class="col-md-4">
+    <form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Contractor.UserId" class="control-label"></label>
+                <input asp-for="Contractor.UserId" class="form-control" />
+                <span asp-validation-for="Contractor.UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contractor.Name" class="control-label"></label>
+                <input asp-for="Contractor.Name" class="form-control" />
+                <span asp-validation-for="Contractor.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contractor.ContactName" class="control-label"></label>
+                <input asp-for="Contractor.ContactName" class="form-control" />
+                <span asp-validation-for="Contractor.ContactName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contractor.ContactEmail" class="control-label"></label>
+                <input asp-for="Contractor.ContactEmail" class="form-control" />
+                <span asp-validation-for="Contractor.ContactEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contractor.ContactPhone" class="control-label"></label>
+                <input asp-for="Contractor.ContactPhone" class="form-control" />
+                <span asp-validation-for="Contractor.ContactPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contractor.Address" class="control-label"></label>
+                <input asp-for="Contractor.Address" class="form-control" />
+                <span asp-validation-for="Contractor.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contractor.BusinessNumber" class="control-label"></label>
+                <input asp-for="Contractor.BusinessNumber" class="form-control" />
+                <span asp-validation-for="Contractor.BusinessNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contractor.Metadata" class="control-label"></label>
+                <input asp-for="Contractor.Metadata" class="form-control" />
+                <span asp-validation-for="Contractor.Metadata" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Contractor.Active" /> @Html.DisplayNameFor(model => model.Contractor.Active)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contractor.CreatedAt" class="control-label"></label>
+                <input asp-for="Contractor.CreatedAt" class="form-control" />
+                <span asp-validation-for="Contractor.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contractor.UpdatedAt" class="control-label"></label>
+                <input asp-for="Contractor.UpdatedAt" class="form-control" />
+                <span asp-validation-for="Contractor.UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
