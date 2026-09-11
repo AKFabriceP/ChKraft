@@ -13,6 +13,7 @@ ADR-00XX".
 | `Accepté` | En vigueur, implémenté dans les fichiers du projet |
 | `Remplacé par ADR-00XX` | Une décision différente l'a remplacée |
 | `Différé` | Analysée et conçue en détail, mais **non implémentée** — candidate explicite pour une version future, pas un rejet définitif ni un abandon |
+| `En étude` | Décision **pas encore prise** — évaluation de faisabilité en cours, questions techniques ou métier encore ouvertes |
 
 ## Index
 
@@ -34,6 +35,7 @@ ADR-00XX".
 | [0014](0014-status-reference-dictionary.md) | Table `StatusReference` — dictionnaire autonome des valeurs d'enum | Différé |
 | [0015](0015-migration-rollback-strategy.md) | Rollback en production via script de migration généré | Différé |
 | [0016](0016-auth0-hierarchical-rbac.md) | Auth0 et RBAC hiérarchique par portée métier | En étude |
+| [0017](0017-serilog-logging.md) | Serilog comme moteur de journalisation, dès la v0.1 | Accepté |
 
 ## Comment ajouter un ADR
 

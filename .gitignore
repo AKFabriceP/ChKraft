@@ -6,3 +6,4 @@ MyRef/
 # Secrets locaux
 appsettings.Development.json
 *.user
+backups/*
