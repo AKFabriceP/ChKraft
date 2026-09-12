@@ -3,8 +3,17 @@ using ChronoKraft.Infrastructure;
 using ChronoKraft.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services));
 
 /* Add services to the container.
 ***********************************/
@@ -25,6 +34,9 @@ builder.Services.AddScoped<UserAccountService>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging(); // Log all HTTP requests automatically
+
 // Ajouter les 4 roles par defaut au demarrage
 using (var scope = app.Services.CreateScope())
 {
@@ -54,6 +66,7 @@ if(args.Contains("--create-admin"))
     bool adminExists = await db.Users.AnyAsync(u => u.Role == UserRole.ADMIN);
     if(adminExists)
     {
+        Log.Warning("An admin account already exists. The --create-admin option can only be used once.");
         Console.WriteLine("An admin account already exists. The --create-admin option can only be used once.");
         return;
     }
@@ -66,6 +79,7 @@ if(args.Contains("--create-admin"))
     var confirmPassword = ReadPasswordMasked();
     if (password != confirmPassword)
     {
+        Log.Warning("Les mots de passe ne correspondent pas.");
         Console.WriteLine("Les mots de passe ne correspondent pas.");
         return;
     }
@@ -73,13 +87,17 @@ if(args.Contains("--create-admin"))
 
     if (result.Succeeded)
     {
+        Log.Information("Compte Admin créé : {Email} par {User}@{Machine} le {DateTime}", email, Environment.UserName, Environment.MachineName, DateTime.UtcNow);
         Console.WriteLine($"Compte Admin créé : {email}");
         Console.WriteLine($"Par {Environment.UserName}@{Environment.MachineName} le {DateTime.UtcNow:u}");
     }
     else
     {
         foreach (var error in result.Errors)
+        {
+            Log.Error("Erreur lors de la création du compte Admin : {Error}", error.Description);
             Console.WriteLine($"Erreur : {error.Description}");
+        }
     }
 
     return; // quitte avant de démarrer Kestrel

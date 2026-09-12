@@ -1,6 +1,7 @@
 using ChronoKraft.Domain.Entities;
 using ChronoKraft.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace ChronoKraft.Infrastructure.Identity
 {
@@ -8,11 +9,13 @@ namespace ChronoKraft.Infrastructure.Identity
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly CKDbContext _dbContext;
+        private readonly ILogger<UserAccountService> _logger;
 
-        public UserAccountService(UserManager<ApplicationUser> userManager, CKDbContext dbContext)
+        public UserAccountService(UserManager<ApplicationUser> userManager, CKDbContext dbContext, ILogger<UserAccountService> logger)
         {
             _userManager = userManager;
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         /// <summary>
@@ -36,16 +39,19 @@ namespace ChronoKraft.Infrastructure.Identity
             var result = await _userManager.CreateAsync(user, password);
             if (!result.Succeeded)
             {
+                _logger.LogError("Failed to create user account for {Email}. Errors: {Errors}", email, string.Join(", ", result.Errors.Select(e => e.Description)));
                 return (result, null);
             }
+            _logger.LogInformation("Successfully created user account for {Email} with role {Role}.", email, role);
 
             // Assign the specified role to the user
             var roleResult = await _userManager.AddToRoleAsync(user, role.ToString());
             if (!roleResult.Succeeded)
             {
+                _logger.LogError("Failed to assign role {Role} to user {Email}. Errors: {Errors}", role, email, string.Join(", ", roleResult.Errors.Select(e => e.Description)));
                 return (roleResult, null);
             }
-
+            _logger.LogInformation("Successfully assigned role {Role} to user {Email}.", role, email);
             return (result, user);
         }
 
@@ -60,6 +66,7 @@ namespace ChronoKraft.Infrastructure.Identity
             worker.UserId = userId;
             _dbContext.Workers.Update(worker);
             await _dbContext.SaveChangesAsync();
+            _logger.LogInformation("Linked worker {WorkerId} to user account {UserId}.", worker.Id, userId);
         }
 
         /// <summary>
@@ -73,6 +80,7 @@ namespace ChronoKraft.Infrastructure.Identity
             projectManager.UserId = userId;
             _dbContext.ProjectManagers.Update(projectManager);
             await _dbContext.SaveChangesAsync();
+            _logger.LogInformation("Linked project manager {ProjectManagerId} to user account {UserId}.", projectManager.Id, userId);
         }
 
         /// <summary>
@@ -86,6 +94,7 @@ namespace ChronoKraft.Infrastructure.Identity
             contractor.UserId = userId;
             _dbContext.Contractors.Update(contractor);
             await _dbContext.SaveChangesAsync();
+            _logger.LogInformation("Linked contractor {ContractorId} to user account {UserId}.", contractor.Id, userId);
         }
     }
 }

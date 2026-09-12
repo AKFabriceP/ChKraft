@@ -21,6 +21,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ChronoKraft.Domain\ChronoKraft.Domain.csproj" />
     <ProjectReference Include="..\ChronoKraft.Application\ChronoKraft.Application.csproj" />
+    <ProjectReference Include="..\ChronoKraft.Infrastructure\ChronoKraft.Infrastructure.csproj" />
+    <ProjectReference Include="..\ChronoKraft.Web\ChronoKraft.Web.csproj" />
   </ItemGroup>
 
 </Project>

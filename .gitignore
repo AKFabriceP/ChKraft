@@ -6,4 +6,12 @@ MyRef/
 # Secrets locaux
 appsettings.Development.json
 *.user
+
+# Sauvegardes de bd
 backups/*
+
+# Fichiers de logs
+logs/
+
+# Resultats de tests
+TestResults/
