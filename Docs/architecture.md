@@ -2,7 +2,7 @@
 
 Système de gestion de projet avec planification Gantt, double saisie
 web/Excel, suivi d'exécution et facturation. Construit sur ASP.NET Core
-(.NET 8) avec Entity Framework Core et PostgreSQL.
+(.NET 10) avec Entity Framework Core et PostgreSQL.
 
 Chaque section renvoie vers les ADRs (`adr/`) qui justifient les choix
 présentés — ce document décrit le système tel qu'il est, les ADRs
@@ -33,6 +33,8 @@ graph TB
     WEB -->|référence| INFRA
     TESTS -->|référence| DOMAIN
     TESTS -->|référence| APPLICATION
+    TESTS -->|référence| INFRA
+    TESTS -->|référence| WEB
 
     style DOMAIN fill:#c8e6c9
     style TESTS fill:#e1f5fe
@@ -77,7 +79,7 @@ graph TB
         DOM_GANTT["GanttCalculator<br/>IDependencyStrategy (FS/SS/FF/SF)"]
         DOM_TS["TimesheetValidator.Validate()"]
         DOM_RES["ResourceAttributeValidator"]
-        ENTITIES["Entités POCO<br/>Worker, Task, Project, etc."]
+        ENTITIES["Entités POCO<br/>Worker, ProjectTask, Project, etc."]
     end
 
     subgraph INFRAPROJ["ChronoKraft.Infrastructure"]
@@ -140,7 +142,7 @@ graph LR
         DOM3["TaskWindow record<br/>(immuable, pas de DbContext,<br/>pas de .Include())"]
     end
 
-    SVC -->|"1. lit Task via IRepository"| SVC
+    SVC -->|"1. lit ProjectTask via IRepository"| SVC
     SVC -->|"2. construit TaskWindow"| DOM3
     SVC -->|"3. délègue le calcul"| DOM1
     DOM1 -->|"4. retourne une DateOnly pure"| SVC
@@ -237,7 +239,7 @@ erDiagram
     ApplicationUser |o--o| Worker : "authenticates_as"
 
     ProjectManager ||--o{ Project : "manages"
-    Project ||--o{ Task : "contains"
+    Project ||--o{ ProjectTask : "contains"
     Project ||--o{ Invoice : "generates"
 
     Contractor ||--o{ Resource : "provides"
@@ -248,7 +250,7 @@ erDiagram
     ResourceType ||--o{ WorkerSkill : "qualifies_for"
 
     Resource ||--o{ ResourceAssignment : "assigned_in"
-    Task ||--o{ ResourceAssignment : "requires"
+    ProjectTask ||--o{ ResourceAssignment : "requires"
     ResourceAssignment ||--o{ ExecutionRecord : "tracks"
 
     Worker ||--o{ WorkerSkill : "has"
@@ -256,11 +258,11 @@ erDiagram
     Worker ||--o{ TimesheetReview : "flagged_for"
 
     WorkerSkill ||--o{ TimesheetEntry : "logged_under"
-    Task ||--o{ TimesheetEntry : "worked_on"
+    ProjectTask ||--o{ TimesheetEntry : "worked_on"
     TimesheetEntry ||--o| ExecutionRecord : "generates"
 
     Invoice ||--o{ InvoiceLine : "contains"
-    Task ||--o{ InvoiceLine : "referenced_in"
+    ProjectTask ||--o{ InvoiceLine : "referenced_in"
 
     ProjectManager {
         int id PK
@@ -287,7 +289,7 @@ erDiagram
         datetime updated_at
     }
 
-    Task {
+    ProjectTask {
         int id PK
         int project_id FK
         string name

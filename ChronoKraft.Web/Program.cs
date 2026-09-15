@@ -19,7 +19,10 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 ***********************************/
 // Add DB service
 builder.Services.AddDbContext<CKDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ChronoKraftDb")));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("ChronoKraftDb"),
+        npgsqlOptions => npgsqlOptions.ConfigureDataSource(dataSourceBuilder =>
+            dataSourceBuilder.EnableDynamicJson())));
 // Add App User service
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
     {
