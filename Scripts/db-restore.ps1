@@ -1,4 +1,4 @@
-# db-restore.ps1 — Restauration de la base ChronoKraft depuis une sauvegarde
+# db-restore.ps1 - Restauration de la base ChronoKraft depuis une sauvegarde
 #
 # Usage:
 #   .\db-restore.ps1                                    # liste interactive
@@ -34,7 +34,7 @@ if (-not $File) {
     }
     Write-Host "Sauvegardes disponibles :"
     for ($i = 0; $i -lt $Backups.Count; $i++) {
-        Write-Host "  [$i] $($Backups[$i].Name) — $($Backups[$i].LastWriteTime)"
+        Write-Host "  [$i] $($Backups[$i].Name) - $($Backups[$i].LastWriteTime)"
     }
     $Selection = Read-Host "Numéro de la sauvegarde à restaurer"
     $File = $Backups[[int]$Selection].FullName
