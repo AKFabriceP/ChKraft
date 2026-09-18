@@ -34,7 +34,8 @@ namespace ChronoKraft.Web.Pages_Workers
             {
                 return Page();
             }
-
+            Worker.CreatedAt = Worker.CreatedAt.ToUniversalTime();
+            Worker.UpdatedAt = Worker.UpdatedAt.ToUniversalTime();
             _context.Workers.Add(Worker);
             await _context.SaveChangesAsync();
 

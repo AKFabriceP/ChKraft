@@ -34,7 +34,8 @@ namespace ChronoKraft.Web.Pages_Contractors
             {
                 return Page();
             }
-
+            Contractor.UpdatedAt = Contractor.UpdatedAt.ToUniversalTime();
+            Contractor.CreatedAt = Contractor.CreatedAt.ToUniversalTime();
             _context.Contractors.Add(Contractor);
             await _context.SaveChangesAsync();
 

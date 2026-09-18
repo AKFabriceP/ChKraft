@@ -4,11 +4,11 @@
 
 <h2>Create an account for this contractor</h2>
 
-@if (Model.ResetLink != null)
+@if (!string.IsNullOrWhiteSpace(Model.ResetLink))
 {
     <div class="alert alert-success">
         <p>Account created. Please share this link with the person in question (valid for a limited time) :</p>
-        <code>@Model.ResetLink</code>
+        <a href="@Model.ResetLink">@Model.ResetLink</a>
     </div>
 }
 else

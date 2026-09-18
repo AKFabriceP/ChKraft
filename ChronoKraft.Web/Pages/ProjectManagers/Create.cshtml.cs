@@ -35,6 +35,8 @@ namespace ChronoKraft.Web.Pages_ProjectManagers
                 return Page();
             }
 
+            ProjectManager.CreatedAt = ProjectManager.CreatedAt.ToUniversalTime();
+            ProjectManager.UpdatedAt = ProjectManager.UpdatedAt.ToUniversalTime();
             _context.ProjectManagers.Add(ProjectManager);
             await _context.SaveChangesAsync();
 

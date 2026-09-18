@@ -1,0 +1,21 @@
+@* ChronoKraft.Web/Pages/Account/Login.cshtml *@
+@page
+@model ChronoKraft.Web.Pages.Account.LoginModel
+
+<h2>Connexion</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label>Email: </label>
+        <input asp-for="Email" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Password: </label>
+        <input asp-for="Password" type="password" class="form-control" required />
+    </div>
+    @if (Model.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    <button type="submit" class="btn btn-primary">Log in</button>
+</form>
