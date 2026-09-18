@@ -1,6 +1,7 @@
 using ChronoKraft.Domain.Entities;
 using ChronoKraft.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace ChronoKraft.Infrastructure.Identity
@@ -95,6 +96,46 @@ namespace ChronoKraft.Infrastructure.Identity
             _dbContext.Contractors.Update(contractor);
             await _dbContext.SaveChangesAsync();
             _logger.LogInformation("Linked contractor {ContractorId} to user account {UserId}.", contractor.Id, userId);
+        }
+
+        /// <summary>
+        /// Creates a new user account and generates a password reset link for the user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public async 
+        Task<(IdentityResult Result, string? ResetToken, ApplicationUser? User)> 
+        CreateAccountWithResetLinkAsync(string email, UserRole role)
+        {
+            // Create user
+            var user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                Role = role
+            };
+            // No password, user will initialize it via reset link
+            var result = await _userManager.CreateAsync(user);
+            if (!result.Succeeded)
+            {
+                _logger.LogError("Failed to create user account for {Email}. Errors: {Errors}", email, string.Join(", ", result.Errors.Select(e => e.Description)));
+                return (result, null, null);
+            }
+            await _userManager.AddToRoleAsync(user, role.ToString());
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            _logger.LogInformation("Generated password reset token for user {Email} as {Role}.", email, role.ToString());
+            return (result, token, user);
+        }
+
+        public async Task LinkExternalLoginAsync(ApplicationUser user, ExternalLoginInfo loginInfo)
+        {
+            await _userManager.AddLoginAsync(user, loginInfo);
+            _logger.LogInformation("Linked external login {LoginProvider} for user {Email}.", loginInfo.LoginProvider, user.Email);
+
+            // Annulation de l option de connection par mot de passe: ceci reste commenté pour le moment
+            // await _userManager.RemovePasswordAsync(user);
+            // _logger.LogInformation("Removed password login option for user {Email}.", user.Email);
         }
     }
 }

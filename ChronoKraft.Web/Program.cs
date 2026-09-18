@@ -31,7 +31,11 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
     })
     .AddEntityFrameworkStores<CKDbContext>()
     .AddDefaultTokenProviders();
-
+// Define token lifespan for password reset and email confirmation tokens
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromHours(24); // default value is actually 1 day, but we can set it explicitly here
+});
 builder.Services.AddScoped<UserAccountService>();
 // default web interface services
 builder.Services.AddRazorPages();

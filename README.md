@@ -53,3 +53,8 @@ décisions prises à ce jour.
 Voir la section correspondante dans `version-plan.md` — notamment la
 conformité aux lois sur la protection des renseignements personnels
 (ADR-0010), volontairement différée et documentée plutôt qu'ignorée.
+
+
+## Notes
+
+Identification de l admin en test: maestro@chronok.com, mdp: Abcd=1234

@@ -1,0 +1,27 @@
+@* ChronoKraft.Web/Pages/ProjectManagers/CreateAccount.cshtml *@
+@page "{projectManagerId:int}"
+@model ChronoKraft.Web.Pages.ProjectManagers.CreateAccountModel
+
+<h2>Create an account for this project manager</h2>
+
+@if (Model.ResetLink != null)
+{
+    <div class="alert alert-success">
+        <p>Account created. Please share this link with the person in question (valid for a limited time) :</p>
+        <code>@Model.ResetLink</code>
+    </div>
+}
+else
+{
+    <form method="post">
+        <div class="mb-3">
+            <label>Email</label>
+            <input asp-for="Email" class="form-control" required />
+        </div>
+        @if (Model.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+        <button type="submit" class="btn btn-primary">Create Account</button>
+    </form>
+}
