@@ -36,6 +36,8 @@ ADR-00XX".
 | [0015](0015-migration-rollback-strategy.md) | Rollback en production via script de migration généré | Différé |
 | [0016](0016-auth0-hierarchical-rbac.md) | Auth0 et RBAC hiérarchique par portée métier | En étude |
 | [0017](0017-serilog-logging.md) | Serilog comme moteur de journalisation, dès la v0.1 | Accepté |
+| [0018](0018-deferred-account-linking.md) | Liaison User/Profil Métier par réinitialisation différée | Accepté |
+| [0019](0019-pm-cross-access-grants.md) | Accès croisé global comme propriété du ProjectManager (résout Q3) | Accepté |
 
 ## Comment ajouter un ADR
 

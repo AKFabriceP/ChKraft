@@ -95,5 +95,6 @@ public class CKDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>,
         modelBuilder.Entity<ProjectTask>().Property(t => t.Status).HasConversion<string>();
         modelBuilder.Entity<ResourceAssignment>().Property(ra => ra.BillingUnit).HasConversion<string>();
         modelBuilder.Entity<ExecutionRecord>().Property(er => er.RateType).HasConversion<string>();
+        modelBuilder.Entity<ProjectManager>().Property(pm => pm.CrossProjectAccessLevel).HasConversion<string>();
     }
 }

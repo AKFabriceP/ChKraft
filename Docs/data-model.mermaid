@@ -4,7 +4,7 @@ erDiagram
     ApplicationUser |o--o| Worker : "authenticates_as"
 
     ProjectManager ||--o{ Project : "manages"
-    Project ||--o{ Task : "contains"
+    Project ||--o{ ProjectTask : "contains"
     Project ||--o{ Invoice : "generates"
 
     Contractor ||--o{ Resource : "provides"
@@ -15,7 +15,7 @@ erDiagram
     ResourceType ||--o{ WorkerSkill : "qualifies_for"
 
     Resource ||--o{ ResourceAssignment : "assigned_in"
-    Task ||--o{ ResourceAssignment : "requires"
+    ProjectTask ||--o{ ResourceAssignment : "requires"
     ResourceAssignment ||--o{ ExecutionRecord : "tracks"
 
     Worker ||--o{ WorkerSkill : "has"
@@ -23,17 +23,18 @@ erDiagram
     Worker ||--o{ TimesheetReview : "flagged_for"
 
     WorkerSkill ||--o{ TimesheetEntry : "logged_under"
-    Task ||--o{ TimesheetEntry : "worked_on"
+    ProjectTask ||--o{ TimesheetEntry : "worked_on"
     TimesheetEntry ||--o| ExecutionRecord : "generates"
 
     Invoice ||--o{ InvoiceLine : "contains"
-    Task ||--o{ InvoiceLine : "referenced_in"
+    ProjectTask ||--o{ InvoiceLine : "referenced_in"
 
     ProjectManager {
         int id PK
         int user_id FK
         string name
         string phone
+        string cross_project_access_level "None/Read/Write - voir ADR-0019"
         datetime created_at
     }
 
@@ -43,7 +44,7 @@ erDiagram
         string name
         text description
         string client_name
-        string status
+        string status "choices: planning/in_progress/completed/cancelled - voir ADR-0013"
         date planned_start_date
         date planned_end_date
         date actual_start_date
@@ -54,13 +55,13 @@ erDiagram
         datetime updated_at
     }
 
-    Task {
+    ProjectTask {
         int id PK
         int project_id FK
         string name
         text description
         string required_trade
-        string status
+        string status "choices: pending/in_progress/completed/blocked - voir ADR-0013"
         int order
         jsonb attributes
         datetime created_at
@@ -86,7 +87,7 @@ erDiagram
         string name UK
         string resource_category "choices: labor/equipment/material"
         string trade
-        string default_billing_unit
+        string default_billing_unit "choices: hour/day/week/unit/kilometer/tonne - voir ADR-0013"
         decimal suggested_rate_min
         decimal suggested_rate_max
         text description
@@ -115,7 +116,7 @@ erDiagram
         int quantity_resources
         decimal estimated_quantity
         decimal estimated_unit_cost
-        string billing_unit
+        string billing_unit "choices: hour/day/week/unit/kilometer/tonne - voir ADR-0013"
         text notes
         jsonb attributes
         datetime created_at
@@ -130,7 +131,7 @@ erDiagram
         int resources_used
         decimal quantity_per_resource
         decimal applied_rate
-        string rate_type
+        string rate_type "choices: standard/overtime/holiday/emergency - voir ADR-0013"
         decimal multiplier
         text notes
         datetime created_at

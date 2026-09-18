@@ -40,8 +40,6 @@ qu'un **nouvel** écart apparaît ensuite à la **même date** — doit-on :
 - **(B)** Mettre à jour la ligne existante (une seule révision "active"
   par travailleur/jour, écrasant l'écart précédent) ?
 
-Une autre question: est ce que le travailleur peut avoir 2 feuille de temps dans la meme journee (matin et apres midi apres la pause)?
-
 ### Impact technique de chaque réponse
 | Réponse | Impact |
 |---|---|
@@ -90,7 +88,7 @@ de ses travailleurs, pas une préférence technique.
 
 ## Q3 — ProjectManager : visibilité croisée entre gestionnaires
 
-**Statut :** En attente de réponse
+**Statut :** Répondu — voir ADR-0019
 
 ### Contexte
 Dans la hiérarchie proposée (ADR-0016), un `ProjectManager` a accès à
@@ -115,6 +113,14 @@ exception ?
 Dépend de la structure organisationnelle réelle du client (gestionnaires
 indépendants vs équipe collaborative avec visibilité partagée) — pas
 une évidence technique à décider ici.
+
+### Réponse retenue
+Accès **global**, pas par projet ni par paire — un champ
+`CrossProjectAccessLevel` directement sur `ProjectManager`
+(`None`/`Read`/`Write`), géré par l'`Admin`. Si accordé, s'applique à
+tous les projets de tous les autres PM, y compris les futurs. Voir
+ADR-0019 pour le détail complet (troisième et dernière itération de ce
+design).
 
 ---
 

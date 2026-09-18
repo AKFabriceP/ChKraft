@@ -1,3 +1,5 @@
+using ChronoKraft.Domain.Enums;
+
 namespace ChronoKraft.Domain.Entities
 {
     public class ProjectManager
@@ -6,6 +8,7 @@ namespace ChronoKraft.Domain.Entities
         public int? UserId { get; set; }
         public required string Name { get; set; }
         public string? Phone { get; set; }
+        public ProjectManagerAccessLevel CrossProjectAccessLevel { get; set; } = ProjectManagerAccessLevel.NONE;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
