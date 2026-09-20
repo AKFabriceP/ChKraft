@@ -11,7 +11,7 @@ namespace ChronoKraft.Domain.Entities
         public int Id { get; set; }
         public int WorkerId { get; set; }
         public Worker? Worker { get; set; }
-        public DateTime WorkDate { get; set; }
+        public DateOnly WorkDate { get; set; }
         public decimal ExternalTotal { get; set; }
         public decimal DeclaredTotal { get; set; }
         public decimal Discrepancy { get; set; }

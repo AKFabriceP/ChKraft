@@ -565,8 +565,8 @@ namespace ChronoKraft.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("WorkDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("WorkDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("WorkerSkillId")
                         .HasColumnType("integer");
@@ -610,8 +610,8 @@ namespace ChronoKraft.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("WorkDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("WorkDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("WorkerId")
                         .HasColumnType("integer");
