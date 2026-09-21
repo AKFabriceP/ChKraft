@@ -1,8 +1,12 @@
+using System.Text;
 using ChronoKraft.Domain.Enums;
 using ChronoKraft.Infrastructure;
 using ChronoKraft.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -31,6 +35,38 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
     })
     .AddEntityFrameworkStores<CKDbContext>()
     .AddDefaultTokenProviders();
+
+// Adding authentication
+builder.Services.AddAuthentication()
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+        };
+    });
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // EF Core entities are circular. 
+        // (Project → ProjectTask → ResourceAssignment → Resource →
+        // Contractor → Worker → ...) — This is to prevent serialization to bug
+        options.JsonSerializerOptions.ReferenceHandler =
+            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+
+        // Serialize enum as stringnot as int(as it is by default)
+        // This allows us to pass strings into the API (Postman).
+        options.JsonSerializerOptions.Converters.Add(
+            new System.Text.Json.Serialization.JsonStringEnumConverter());
+    });
 // Define token lifespan for password reset and email confirmation tokens
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 {
@@ -40,8 +76,33 @@ builder.Services.AddScoped<UserAccountService>();
 // default web interface services
 builder.Services.AddRazorPages();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "ChronoKraft API", Version = "v1" });
+
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Description = "enters the JWT token - Swagger automatically adds the 'Bearer' prefix"
+    });
+
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+    });
+});
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.MapControllers(); 
 app.UseSerilogRequestLogging(); // Log all HTTP requests automatically
 
 // Ajouter les 4 roles par defaut au demarrage
