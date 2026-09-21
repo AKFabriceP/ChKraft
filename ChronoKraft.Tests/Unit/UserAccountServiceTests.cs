@@ -11,7 +11,7 @@ public class UserAccountServiceTests
     private static Mock<UserManager<ApplicationUser>> CreateMockUserManager()
     {
         var store = new Mock<IUserStore<ApplicationUser>>();
-        return new Mock<UserManager<ApplicationUser>>(store.Object, null, null, null, null, null, null, null, null);
+        return new Mock<UserManager<ApplicationUser>>(store.Object, null!, null!, null!, null!, null!, null!, null!, null!);
     }
 
     [Fact]
