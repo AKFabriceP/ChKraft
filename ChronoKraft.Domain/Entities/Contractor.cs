@@ -11,7 +11,7 @@ namespace ChronoKraft.Domain.Entities
         public string? Address { get; set; }
         public string? BusinessNumber { get; set; }
         public Dictionary<string, object> Metadata { get; set; } = new();
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

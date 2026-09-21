@@ -15,8 +15,8 @@ namespace ChronoKraft.Domain.Entities
         public ResourceCategory ResourceCategory { get; set; }
         public string? Trade { get; set; }
         public BillingUnit DefaultBillingUnit { get; set; } = BillingUnit.HOUR;
-        public decimal SuggestedRateMin { get; set; }
-        public decimal SuggestedRateMax { get; set; }
+        public decimal? SuggestedRateMin { get; set; }
+        public decimal? SuggestedRateMax { get; set; }
         public string? Description { get; set; }
         public string? StandardAttributes { get; set; }
         public bool Active { get; set; }

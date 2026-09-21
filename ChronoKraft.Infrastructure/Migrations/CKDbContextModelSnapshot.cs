@@ -90,11 +90,11 @@ namespace ChronoKraft.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("CreatedById")
+                    b.Property<int?>("CreatedById")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("ExecutionDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("ExecutionDate")
+                        .HasColumnType("date");
 
                     b.Property<decimal>("Multiplier")
                         .HasColumnType("numeric");
@@ -118,12 +118,17 @@ namespace ChronoKraft.Infrastructure.Migrations
                     b.Property<int?>("SourceTimesheetEntryId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("TimeSheetEntryId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ResourceAssignmentId");
+
+                    b.HasIndex("TimeSheetEntryId");
 
                     b.ToTable("ExecutionRecords");
                 });
@@ -137,11 +142,9 @@ namespace ChronoKraft.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ExternalReferenceId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("SourceSystem")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("SyncedAt")
@@ -150,8 +153,8 @@ namespace ChronoKraft.Infrastructure.Migrations
                     b.Property<decimal>("TotalHours")
                         .HasColumnType("numeric");
 
-                    b.Property<DateTime>("WorkDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("WorkDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("WorkerId")
                         .HasColumnType("integer");
@@ -178,8 +181,8 @@ namespace ChronoKraft.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("InvoiceNumber")
                         .IsRequired()
@@ -189,8 +192,8 @@ namespace ChronoKraft.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("IssueDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("IssueDate")
+                        .HasColumnType("date");
 
                     b.Property<Dictionary<string, object>>("Metadata")
                         .IsRequired()
@@ -209,6 +212,8 @@ namespace ChronoKraft.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ContractorId");
 
                     b.HasIndex("ProjectId");
 
@@ -265,10 +270,10 @@ namespace ChronoKraft.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("ActualEndDate")
+                    b.Property<DateTime?>("ActualEndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("ActualStartDate")
+                    b.Property<DateTime?>("ActualStartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ClientName")
@@ -280,7 +285,7 @@ namespace ChronoKraft.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("EstimatedBudget")
+                    b.Property<decimal?>("EstimatedBudget")
                         .HasColumnType("numeric");
 
                     b.Property<int>("ManagerId")
@@ -294,10 +299,10 @@ namespace ChronoKraft.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("PlannedEndDate")
+                    b.Property<DateTime?>("PlannedEndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("PlannedStartDate")
+                    b.Property<DateTime?>("PlannedStartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
@@ -378,7 +383,6 @@ namespace ChronoKraft.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("RequiredTrade")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Status")
@@ -403,7 +407,8 @@ namespace ChronoKraft.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Attributes")
+                    b.Property<Dictionary<string, object>>("Attributes")
+                        .IsRequired()
                         .HasColumnType("jsonb");
 
                     b.Property<bool>("Available")
@@ -521,10 +526,10 @@ namespace ChronoKraft.Infrastructure.Migrations
                     b.Property<string>("StandardAttributes")
                         .HasColumnType("jsonb");
 
-                    b.Property<decimal>("SuggestedRateMax")
+                    b.Property<decimal?>("SuggestedRateMax")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal>("SuggestedRateMin")
+                    b.Property<decimal?>("SuggestedRateMin")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Trade")
@@ -588,6 +593,9 @@ namespace ChronoKraft.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<decimal>("DeclaredTotal")
                         .HasColumnType("numeric");
 
@@ -600,15 +608,18 @@ namespace ChronoKraft.Infrastructure.Migrations
                     b.Property<string>("ResolutionNotes")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("ReviewedAt")
+                    b.Property<DateTime?>("ReviewedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("ReviewedById")
+                    b.Property<int?>("ReviewedById")
                         .HasColumnType("integer");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAd")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateOnly>("WorkDate")
                         .HasColumnType("date");
@@ -696,6 +707,8 @@ namespace ChronoKraft.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ResourceTypeId");
 
                     b.HasIndex("WorkerId", "ResourceTypeId")
                         .IsUnique();
@@ -911,18 +924,36 @@ namespace ChronoKraft.Infrastructure.Migrations
 
             modelBuilder.Entity("ChronoKraft.Domain.Entities.ExecutionRecord", b =>
                 {
-                    b.HasOne("ChronoKraft.Domain.Entities.ResourceAssignment", null)
+                    b.HasOne("ChronoKraft.Domain.Entities.ResourceAssignment", "ResourceAssignment")
                         .WithMany("ExecutionRecords")
                         .HasForeignKey("ResourceAssignmentId");
+
+                    b.HasOne("ChronoKraft.Domain.Entities.TimeSheetEntry", "TimeSheetEntry")
+                        .WithMany("GeneratedExecutionRecords")
+                        .HasForeignKey("TimeSheetEntryId");
+
+                    b.Navigation("ResourceAssignment");
+
+                    b.Navigation("TimeSheetEntry");
                 });
 
             modelBuilder.Entity("ChronoKraft.Domain.Entities.Invoice", b =>
                 {
-                    b.HasOne("ChronoKraft.Domain.Entities.Project", null)
+                    b.HasOne("ChronoKraft.Domain.Entities.Contractor", "Contractor")
+                        .WithMany()
+                        .HasForeignKey("ContractorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChronoKraft.Domain.Entities.Project", "Project")
                         .WithMany("Invoices")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Contractor");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("ChronoKraft.Domain.Entities.InvoiceLine", b =>
@@ -992,7 +1023,7 @@ namespace ChronoKraft.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("ChronoKraft.Domain.Entities.Resource", "Resource")
-                        .WithMany()
+                        .WithMany("ResourceAssignments")
                         .HasForeignKey("ResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1041,11 +1072,19 @@ namespace ChronoKraft.Infrastructure.Migrations
 
             modelBuilder.Entity("ChronoKraft.Domain.Entities.WorkerSkill", b =>
                 {
+                    b.HasOne("ChronoKraft.Domain.Entities.ResourceType", "ResourceType")
+                        .WithMany()
+                        .HasForeignKey("ResourceTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ChronoKraft.Domain.Entities.Worker", null)
                         .WithMany("Skills")
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ResourceType");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -1128,9 +1167,19 @@ namespace ChronoKraft.Infrastructure.Migrations
                     b.Navigation("ResourceAssignments");
                 });
 
+            modelBuilder.Entity("ChronoKraft.Domain.Entities.Resource", b =>
+                {
+                    b.Navigation("ResourceAssignments");
+                });
+
             modelBuilder.Entity("ChronoKraft.Domain.Entities.ResourceAssignment", b =>
                 {
                     b.Navigation("ExecutionRecords");
+                });
+
+            modelBuilder.Entity("ChronoKraft.Domain.Entities.TimeSheetEntry", b =>
+                {
+                    b.Navigation("GeneratedExecutionRecords");
                 });
 
             modelBuilder.Entity("ChronoKraft.Domain.Entities.Worker", b =>

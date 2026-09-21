@@ -12,6 +12,8 @@ namespace ChronoKraft.Domain.Entities
         public string Notes { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        public ICollection<ExecutionRecord> GeneratedExecutionRecords { get; set; } = new List<ExecutionRecord>();
     }
 }
 

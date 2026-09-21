@@ -9,10 +9,12 @@ namespace ChronoKraft.Domain.Entities
         public ResourceType? ResourceType { get; set; }
         public int AvailableQuantity { get; set; }
         public decimal BaseRate { get; set; }
-        public string? Attributes { get; set; }
+        public Dictionary<string, object> Attributes { get; set; } = new();
         public string? Notes { get; set; }
-        public bool Available { get; set; }
+        public bool Available { get; set; } = true;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        public ICollection<ResourceAssignment> ResourceAssignments { get; set; } = new List<ResourceAssignment>();
     }
 }

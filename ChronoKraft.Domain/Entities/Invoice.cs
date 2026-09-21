@@ -9,11 +9,13 @@ namespace ChronoKraft.Domain.Entities
     {
         public int Id { get; set; }
         public int ProjectId { get; set; }
+        public Project? Project { get; set; }
         public int ContractorId { get; set; }
+        public Contractor? Contractor { get; set; }
         public string InvoiceNumber { get; set; } = string.Empty;
         public InvoiceType InvoiceType { get; set; } = InvoiceType.PARTIAL;
-        public DateTime IssueDate { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateOnly IssueDate { get; set; }
+        public DateOnly DueDate { get; set; }
         public decimal TotalAmount { get; set; }
         public string? Notes { get; set; }
         public Dictionary<string, object> Metadata { get; set; } = new();

@@ -9,7 +9,7 @@ namespace ChronoKraft.Domain.Entities
         public Project? Project { get; set; }
         public required string Name { get; set; }
         public string? Description { get; set; }
-        public required string RequiredTrade { get; set; }
+        public required string? RequiredTrade { get; set; }
         public ProjectTaskStatus Status { get; set; } = ProjectTaskStatus.PENDING;
         public int Order { get; set; }
         public Dictionary<string, object> Attributes { get; set; } = new();
