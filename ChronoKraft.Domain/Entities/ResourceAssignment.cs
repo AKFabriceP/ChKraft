@@ -9,6 +9,8 @@ namespace ChronoKraft.Domain.Entities
         public ProjectTask? ProjectTask { get; set; }
         public int ResourceId { get; set; }
         public Resource? Resource { get; set; }
+        public int? WorkerId { get; set; }
+        public Worker? Worker { get; set; }
         public int QuantityResources { get; set; }
         public decimal EstimatedQuantity { get; set; }
         public decimal EstimatedUnitCost { get; set; }

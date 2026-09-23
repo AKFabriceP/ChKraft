@@ -484,9 +484,14 @@ namespace ChronoKraft.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int?>("WorkerId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectTaskId");
+
+                    b.HasIndex("WorkerId");
 
                     b.HasIndex("ResourceId", "ProjectTaskId")
                         .IsUnique();
@@ -1028,9 +1033,15 @@ namespace ChronoKraft.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ChronoKraft.Domain.Entities.Worker", "Worker")
+                        .WithMany()
+                        .HasForeignKey("WorkerId");
+
                     b.Navigation("ProjectTask");
 
                     b.Navigation("Resource");
+
+                    b.Navigation("Worker");
                 });
 
             modelBuilder.Entity("ChronoKraft.Domain.Entities.TimeSheetEntry", b =>

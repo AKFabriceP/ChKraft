@@ -16,11 +16,35 @@ public class ProjectTaskRepository : IProjectTaskRepository
     public async Task<IReadOnlyList<ProjectTask>> GetByManagerAsync(int managerId)
         => await _db.ProjectTasks.Where(t => t.Project!.ManagerId == managerId).ToListAsync();
 
+    public async Task<IReadOnlyList<ProjectTask>> GetByContractorUserAsync(int userId)
+        => await _db.ProjectTasks
+            .Where(t => t.ResourceAssignments.Any(a =>
+                a.Resource != null && a.Resource.Contractor != null &&
+                a.Resource.Contractor.UserId == userId))
+            .ToListAsync();
+
+    public async Task<IReadOnlyList<ProjectTask>> GetByWorkerUserAsync(int userId)
+        => await _db.ProjectTasks
+            .Where(t => t.ResourceAssignments.Any(a =>
+                a.Worker != null && a.Worker.UserId == userId))
+            .ToListAsync();
+
     public async Task<IReadOnlyList<ProjectTask>> GetByProjectAsync(int projectId)
         => await _db.ProjectTasks.Where(t => t.ProjectId == projectId).ToListAsync();
 
     public async Task<ProjectTask?> GetByIdAsync(int id)
         => await _db.ProjectTasks.FindAsync(id);
+
+    public async Task<ProjectTask?> GetByIdForContractorUserAsync(int taskId, int userId)
+        => await _db.ProjectTasks.FirstOrDefaultAsync(t =>
+            t.Id == taskId && t.ResourceAssignments.Any(a =>
+                a.Resource != null && a.Resource.Contractor != null &&
+                a.Resource.Contractor.UserId == userId));
+
+    public async Task<ProjectTask?> GetByIdForWorkerUserAsync(int taskId, int userId)
+        => await _db.ProjectTasks.FirstOrDefaultAsync(t =>
+            t.Id == taskId && t.ResourceAssignments.Any(a =>
+                a.Worker != null && a.Worker.UserId == userId));
 
     public async Task AddAsync(ProjectTask task)
     {
